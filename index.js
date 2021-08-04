@@ -61,12 +61,12 @@ function runner(gridList, startX, startY, endX, endY) {
       const neighbourX = current.x + directions[i][0];
       const neighbourY = current.y + directions[i][1];
       let flag = 0;
-      if (neighbourX >= 0 && neighbourX < gridList.length && neighbourY >= 0 && neighbourY < gridList[0].length && gridList[neighbourX][neighbourY] !== 'X') {
-        for (let j=0; j<visited.length; j++) {
-          if (visited[j].x === neighbourX && visited[j].y === neighbourY) {
+      if (neighbourX >= 0 && neighbourX < gridList.length && neighbourY >= 0 && neighbourY < gridList[0].length &&
+        gridList[neighbourX][neighbourY] !== 'X') {
+        visited.forEach((point) => {
+          if (point.x === neighbourX && point.y === neighbourY)
             flag = 1;
-          }
-        }
+        })
         if (!flag) {
           queue.push(new Coordinate(neighbourX, neighbourY, current.distance + 1, current))
           if (goal.x === neighbourX && goal.y === neighbourY) {
@@ -77,9 +77,8 @@ function runner(gridList, startX, startY, endX, endY) {
         }
       }
     }
-    if (possibility) {
+    if (possibility)
       break
-    }
     }
   if (!possibility)
     return possibility
@@ -92,11 +91,7 @@ function runner(gridList, startX, startY, endX, endY) {
   }
   output = output.reverse();
   output.unshift(new Coordinate(startX, startY, 0, null))
-  const res = [];
-  for (let m=0; m<output.length; m++) {
-    res.push({x: output[m].x, y: output[m].y})
-  }
-  return res;
+  return output.map((item) => {return {x: item.x, y: item.y}});
 }
 
 const result = console.log(runner(
